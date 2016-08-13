@@ -1,8 +1,9 @@
 FROM alpine:latest
 
-RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories \
-    && apk add --update autossh@testing \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+    echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
+    apk add autossh@testing && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV \
     AUTOSSH_LOGFILE=/dev/stdout \
