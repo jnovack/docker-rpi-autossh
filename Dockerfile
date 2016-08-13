@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM hypriot/rpi-alpine-scratch
 
 RUN apk update && \
     echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
