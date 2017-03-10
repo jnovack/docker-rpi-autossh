@@ -1,9 +1,15 @@
-FROM hypriot/rpi-alpine-scratch
+FROM hypriot/rpi-alpine-scratch:latest
+MAINTAINER Justin J. Novack <jnovack@gmail.com>
 
-RUN apk update && \
-    echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
-    apk add --update autossh@testing && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk update
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+
+COPY entrypoint.sh /usr/bin/entrypoint.sh
+
+RUN chmod 755 /usr/bin/entrypoint.sh
+
+# Customization below.
 
 ENV \
     AUTOSSH_LOGFILE=/dev/stdout \
@@ -11,11 +17,8 @@ ENV \
     AUTOSSH_POLL=10             \
     AUTOSSH_FIRST_POLL=30       \
     AUTOSSH_PORT=13000          \
-    # AUTOSSH_DEBUG=1             \
     AUTOSSH_LOGLEVEL=1
 
-ADD /cmd.sh /cmd.sh
-
-RUN chmod 755 /cmd.sh
-
-CMD ["/cmd.sh"]
+RUN echo "@testing http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
+    apk add --update autossh@testing && \
+    rm -rf /var/lib/apt/lists/*
